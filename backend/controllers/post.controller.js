@@ -2,9 +2,10 @@ const PostModel = require("../models/post.model");
 const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 
+
 module.exports.readPost = async (req, res) => {
   const posts = await PostModel.find();
-  res.status(200).json(posts);
+  res.status(200).json(posts).sort({ createdAt: -1 });
 };
 module.exports.createPost = async (req, res) => {
   const newPost = new PostModel({
@@ -52,24 +53,24 @@ module.exports.deletePost = (req, res) => {
 module.exports.likePost = async (req, res) => {
   if (!ObjectID.isValid(req.params.id) || !ObjectID.isValid(req.body.userId))
     return res.status(400).send("ID inconnu : " + req.params.id);
-  
-    try {
+
+  try {
     await PostModel.findByIdAndUpdate(
       req.params.id,
       {
         $addToSet: { likers: req.body.userId },
       },
-      { new: true, upsert : true },
-    
+      { new: true, upsert: true }
     );
     await UserModel.findByIdAndUpdate(
       req.body.userId,
       {
         $addToSet: { likes: req.params.id },
       },
-      { new: true, upsert : true }
-   
-    ).select("-password").then((data) => res.status(200).send(data));
+      { new: true, upsert: true }
+    )
+      .select("-password")
+      .then((data) => res.status(200).send(data));
   } catch (err) {
     return res.status(400).send(err);
   }
@@ -78,24 +79,28 @@ module.exports.likePost = async (req, res) => {
 module.exports.unlikePost = async (req, res) => {
   if (!ObjectID.isValid(req.params.id) || !ObjectID.isValid(req.body.userId))
     return res.status(400).send("ID unknown : " + req.params.id);
-    try {
-      await PostModel.findByIdAndUpdate(
-        req.params.id,
-        {
-          $pull: { likers: req.body.userId },
-        },
-        { new: true, upsert : true },
-      
-      );
-      await UserModel.findByIdAndUpdate(
-        req.body.userId,
-        {
-          $pull: { likes: req.params.id },
-        },
-        { new: true, upsert : true }
-     
-      ).then((data) => res.status(200).send(data));
-    } catch (err) {
-      return res.status(400).send(err);
-    }
-  };
+  try {
+    await PostModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: { likers: req.body.userId },
+      },
+      { new: true, upsert: true }
+    );
+    await UserModel.findByIdAndUpdate(
+      req.body.userId,
+      {
+        $pull: { likes: req.params.id },
+      },
+      { new: true, upsert: true }
+    ).then((data) => res.status(200).send(data));
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+};
+
+
+
+
+
+

@@ -8,8 +8,8 @@ const PostSchema = new mongoose.Schema(
     },
     message: {
       type: String,
-      trip: true,
-      maxLength: 500,
+      trim: true,
+      maxlength: 500,
     },
     picture: {
       type: String,
@@ -24,7 +24,7 @@ const PostSchema = new mongoose.Schema(
     comments: {
       type: [
         {
-          commentId: String,
+          commenterId: String,
           commenterPseudo: String,
           text: String,
           timestamp: Number,
