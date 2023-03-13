@@ -1,7 +1,24 @@
 const express = require("express");
 const router = express.Router();
+const UserModel = require("../models/user.model")
 const authController = require("../controllers/auth.controller");
 const userController = require("../controllers/user.controller");
+const uploadController = require("../controllers/upload.controller");
+const multer = require("multer");
+const path = require("path");
+
+//stokage image user
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, `../../cours-social/frontend/client/public/uploads/profil/`);
+  },
+  filename: function (req, file, cb) {
+    cb(null,  file.originalname);
+    console.log(file);
+  },
+});
+const upload = multer({ storage: storage });
+
 
 //auth
 router.post("/register", authController.signUp);
@@ -18,4 +35,8 @@ router.delete("/:id", userController.deleteOneUser);
 router.patch("/unfollow/:id", userController.unfollow);
 router.patch("/follow/:id", userController.follow);
 module.exports = router;
+
+//upload
+
+router.put("/:id/upload", upload.single("image"), uploadController.uploadProfil);
 
