@@ -29,8 +29,9 @@ module.exports.uploadPost = async (req, res, next) => {
         }
     
         // Mettre à jour la photo de profil de l'utilisateur
-        post.picture = "./uploads/post/" + req.file.filename;
+        post.picture = "./uploads/post/" +  req.file.filename;
         await post.save();
+        console.log(post);
     
         res.send('Photo du post  mise à jour avec succès');
       } catch (err) {

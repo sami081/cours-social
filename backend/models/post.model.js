@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema.Types;
 
 const PostSchema = new mongoose.Schema(
   {
-    userId: {
-      type: String,
-      required: true,
-    },
+    userId: [{ type: ObjectId, ref: "user" }],
     message: {
       type: String,
       trim: true,
@@ -13,6 +11,7 @@ const PostSchema = new mongoose.Schema(
     },
     picture: {
       type: String,
+      required: true,
     },
     video: {
       type: String,

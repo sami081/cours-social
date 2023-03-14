@@ -38,9 +38,7 @@ const userSchema = mongoose.Schema(
     likes: {
       type: [String],
     },
-    posts : {
-      type : [String],
-    },
+    posts : [{ type: ObjectId, ref: "post" }],
     following: [{ type: ObjectId, ref: "user" }],
     followers: [{ type: ObjectId, ref: "user" }],
   },
