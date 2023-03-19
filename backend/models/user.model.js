@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto")
 const userSchema = mongoose.Schema(
   {
     pseudo: {
@@ -9,7 +10,7 @@ const userSchema = mongoose.Schema(
       required: true,
       minLength: 3,
       maxLength: 55,
-      unique: true,
+      // unique: true,
       trimp: true,
     },
     email: {
@@ -38,9 +39,10 @@ const userSchema = mongoose.Schema(
     likes: {
       type: [String],
     },
-    posts : [{ type: ObjectId, ref: "post" }],
+    posts: [{ type: ObjectId, ref: "post" }],
     following: [{ type: ObjectId, ref: "user" }],
     followers: [{ type: ObjectId, ref: "user" }],
+   
   },
   {
     timestamps: true,

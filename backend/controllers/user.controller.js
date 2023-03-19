@@ -21,16 +21,27 @@ module.exports.getOneUser = async (req, res) => {
 module.exports.modifyOneUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID inconnu : " + req.params.id);
-  const oneUser = await UserModel.findById(req.params.id).select("-password");
-
-  if (!oneUser) {
-    res.status(400).json({ message: "Cet utilisateur n'existe pas" });
-  }
-
-  const updateUser = await UserModel.findByIdAndUpdate(oneUser, req.body, {
-    new: true,
-  }).select("-password");
-  res.status(200).json(updateUser);
+    const { id } = req.params;
+    const { bio } = req.body;
+    try {
+      // Recherche de l'utilisateur par ID
+      const user = await UserModel.findById(id);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+      }
+  
+      // Modification de la bio de l'utilisateur
+      user.bio = bio;
+      
+      // Enregistrement des modifications
+      await user.save();
+  
+      return res.status(200).json({ message: 'Bio mise à jour avec succès.', user });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Une erreur s\'est produite lors de la mise à jour de la bio de l\'utilisateur.' });
+    }
 };
 
 module.exports.deleteOneUser = async (req, res, next) => {
