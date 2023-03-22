@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto")
+const crypto = require("crypto");
 const userSchema = mongoose.Schema(
   {
     pseudo: {
@@ -27,6 +27,7 @@ const userSchema = mongoose.Schema(
       maxLength: 1024,
       minLength: 6,
     },
+
     picture: {
       type: String,
       default: "./uploads/profil/random-user.png",
@@ -42,8 +43,12 @@ const userSchema = mongoose.Schema(
     posts: [{ type: ObjectId, ref: "post" }],
     following: [{ type: ObjectId, ref: "user" }],
     followers: [{ type: ObjectId, ref: "user" }],
-   
+    // resetLink: {
+    //   data: String,
+    //   default: "",
+    // },
   },
+
   {
     timestamps: true,
   }

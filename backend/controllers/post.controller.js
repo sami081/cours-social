@@ -6,7 +6,7 @@ const fs = require("fs");
 
 module.exports.readPost = async (req, res) => {
   const posts = await PostModel.find();
-  res.status(200).json(posts).sort({ createdAt: -1 });
+  res.status(200).json(posts)
 };
 module.exports.createPost = async (req, res) => {
   if (!ObjectID.isValid(req.body.userId))

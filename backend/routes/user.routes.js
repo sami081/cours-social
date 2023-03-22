@@ -25,6 +25,9 @@ router.post("/register", authController.signUp);
 router.post("/login", authController.signIn);
 router.get("/logout", authController.logout);
 router.post("/email/activate", authController.activateAccount)
+router.post("/forgot-password",authController.forgotPassword)
+router.put("/update-password/:id/:token",authController.updatePassword)
+// router.put("/modify/password", authController.modifyPassword)
 
 //user display
 

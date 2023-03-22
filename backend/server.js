@@ -8,11 +8,20 @@ const connectDB = require("./config/db");
 const { checkUser, requireAuth } = require("./middleware/auth.middleware");
 connectDB();
 const app = express();
+const corsOptions = {
+  origine :process.env.CLIENT_URL,
+  credentials : true,
+  'allowedHeaders' : ['sessionId', 'Content-type'],
+  'exposedHeaders' : ['sessionId'],
+  'methods' : 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  'preflightContinue' : false
+}
 
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors())
+
 //jwt
 
 app.get("*", checkUser);
