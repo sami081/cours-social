@@ -33,6 +33,7 @@ module.exports.signUp = async (req, res) => {
   const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
   const minLengthPseudo = 3;
+  let errors = { pseudo: "", email: "", password: "" };
   const emailAll = [];
   const users = await UserModel.find().select("-password");
   users.forEach(function (user) {
@@ -45,22 +46,23 @@ module.exports.signUp = async (req, res) => {
   });
   const { pseudo, email, password } = req.body;
   if (pseudo.length < minLengthPseudo) {
+    errors.pseudo = " le pseudo doit avoir 3 caractère minimum"
     return res
-      .status(400)
-      .send({ message: "le pseudo doit avoir 3 caractère." });
+      .status(200)
+      .json({errors });
   }
   if (!emailRegex.test(email)) {
     // Si l'adresse email n'est pas valide, retournez une erreur
+    errors.email = "cet email n'est pas valide"
     return res
-      .status(400)
-      .send({ message: "Veuillez saisir une adresse email valide." });
+      .status(200)
+      .json({errors });
   }
   if (!passwordRegex.test(password)) {
+    errors.password = "Le mot de passe doit contenir minimum 8 caractère dont au moins une majuscule, une minuscule, un chiffre"
     // Si le mot de passe ne répond pas aux exigences de complexité, retournez une erreur
-    return res.status(400).send({
-      message:
-        "Le mot de passe doit contenir au moins 8 caractères, dont au moins une lettre majuscule, une lettre minuscule et un chiffre.",
-    });
+    return res.status(200)
+    .json({errors });
   }
 
   // Si le mot de passe est valide, continuez le traitement de l'inscription de l'utilisateur
@@ -69,17 +71,17 @@ module.exports.signUp = async (req, res) => {
   console.log(pseudo2);
   console.log(email2);
   if (emailAll.includes(email2)) {
-    res.status(400).json({
-      message:
-        "Cette email est déja utilisé pour un autre compte veuiilez vous connecter",
+    errors.email = "Cet email est déja pris"
+    res.status(200).json({
+     errors
     });
   } else if (pseudoAll.includes(pseudo2)) {
-    res.status(400).json({
-      message:
-        "Ce pseudo est déja utilisé pour un autre compte veuiilez vous connecter",
+    errors.pseudo ="ce pseudo est deja pris"
+    res.status(200).json({
+     errors
     });
   } else {
-    const token2 = jwt.sign(
+     token2 = jwt.sign(
       { pseudo, email, password },
       process.env.TOKEN_SECRET2,
       { expiresIn: "20m" }
@@ -90,8 +92,9 @@ module.exports.signUp = async (req, res) => {
         from: "samimakhloufi55@gmail.com",
         to: email,
         subject: "Valider votre inscription",
-        html: `<h2> Veuillez cliquer sur le lien pour valider l'inscription </h2>
-      <p> ${process.env.CLIENT_URL}/authentitication/activate/${token2}</p>
+        html: `<h2> Veuillez copier le code  </h2>
+      <p> ${process.env.CLIENT_URL}/activation-account/${token2}</p>
+      <p>  code de vérification : ${token2}</p>
       
       `,
       };
@@ -101,20 +104,23 @@ module.exports.signUp = async (req, res) => {
         // }
         return res.json({ message: "email envoyé" });
       });
-    } catch {
-      const errors = signUpErrors(err);
-      res.status(200).send({ errors });
+    } catch(err) {
+      // const errors = signUpErrors(err);
+      res.status(400).send({ err});
+      lo
     }
   }
 };
 
 module.exports.activateAccount = (req, res) => {
   const { token2 } = req.body;
+  let error = {code:""}
 
   if (token2) {
     jwt.verify(token2, process.env.TOKEN_SECRET2, function (err, decodedToken) {
       if (err) {
-        return res.status(400).json({ error: "incorrect or expired link" });
+        error.code ="Le code n'est pas bon ou a expirer veuiller recommencer l'inscription ou saisir le bon code"
+        return res.status(200).json({ message: error.code });
       }
       const { pseudo, email, password } = decodedToken;
 
@@ -127,7 +133,7 @@ module.exports.activateAccount = (req, res) => {
       }
     });
   } else {
-    return res.json({ error: "Something went wrong" });
+    return res.status(200).json({ error: "Something went wrong" });
   }
 };
 

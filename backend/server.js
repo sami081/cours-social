@@ -9,7 +9,7 @@ const { checkUser, requireAuth } = require("./middleware/auth.middleware");
 connectDB();
 const app = express();
 const corsOptions = {
-  origine :process.env.CLIENT_URL,
+  origin :process.env.CLIENT_URL,
   credentials : true,
   'allowedHeaders' : ['sessionId', 'Content-type'],
   'exposedHeaders' : ['sessionId'],
