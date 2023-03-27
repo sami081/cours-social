@@ -4,16 +4,19 @@ import SignInForm from "../components/Log/SignInForm";
 
 const ValidEmail = () => {
   const [formSubmit, setFormSubmit] = useState(false);
-  const [token2, setToken2] = useState("");
+  // const [token2, setToken2] = useState("");
   const handleValid = (e) => {
     e.preventDefault();
+    const url = window.location.href;
+    const tableau = url.split("/")
+    console.log(tableau)
      const tokenError = document.querySelector(".token.error");
 
     axios({
       method: "post",
-      url: `${process.env.REACT_APP_API_URL}api/user/email/activate`,
+      url: `${process.env.REACT_APP_API_URL}api/user/email/activate/${tableau[4]}`,
       data: {
-        token2
+        // token2
       }
     }).then((data) => {
       if(data.data.message) {
@@ -36,17 +39,10 @@ const ValidEmail = () => {
 
       <form action="" onSubmit={handleValid} id="valid-email">
         <h4>Un email vous a été envoyé veuiller suivre les instruction avant de vous connecté</h4>
-      <label htmlFor="token2">Code de vérification : </label>
-      <input
-        type="text"
-        name="token2"
-        id="token2"
-        onChange={(e) => setToken2(e.target.value)}
-        value={token2}
-        />
+     
 
       <div className="token error"></div>
-      <input type="submit" value="Valider le code" />
+      <input type="submit" value="Valider l'enregistrement de vote compte" />
     </form>
         )}
     </>

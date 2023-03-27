@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LeftNav from "../LeftNav";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 
@@ -18,6 +19,7 @@ const Log = (props) => {
 
   return (
     <div className="connection-form">
+       <LeftNav/> 
       <div className="form-container">
         <ul>
           <li
