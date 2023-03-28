@@ -42,5 +42,5 @@ module.exports = router;
 
 //upload
 
-router.put("/:id/upload", upload.single("image"), uploadController.uploadProfil);
+router.put("/:id/upload", upload.single("file"), uploadController.uploadProfil);
 
