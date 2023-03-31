@@ -33,6 +33,7 @@ router.put("/update-password/:id/:token",authController.updatePassword)
 
 router.get("/", userController.getAllUsers);
 router.get("/:id", userController.getOneUser);
+
 router.put("/:id", userController.modifyOneUser);
 router.delete("/:id", userController.deleteOneUser);
 //router.patch("/follow/:id", userController.follow);
