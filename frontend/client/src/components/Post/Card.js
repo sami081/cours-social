@@ -63,7 +63,7 @@ const Card = ({ post }) => {
                   <FollowHandler idToFollow={post.data} type={"card"} />
                 )}
               </div>
-              <span>{console.log(userData)};</span>
+              <span>{console.log(userData)}</span>
               <span>{dateParser(post.createdAt)}</span>
               {isUpdated === false && <p>{post.message}</p>}
               {isUpdated && (

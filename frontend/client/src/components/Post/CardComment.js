@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isEmpty, timestampParser } from "../Utils";
 import FollowHandler from "../Profil/FollowHandler";
+import { addComment, getPosts } from "../../actions/post.action";
+import EditDeleteComment from "./EditDeleteComment";
+import { UidContext } from "../AppContext";
 
 const CardComment = ({ post }) => {
   const [text, setText] = useState("");
   const usersData = useSelector((state) => state.users);
   const userData = useSelector((state) => state.user);
   const dispatch = useDispatch();
+const uid = useContext(UidContext)
+console.log(uid);
+  const handlecomment = (e) => {
+    e.preventDefault();
 
-  const handlecomment = () => {};
+    if (text) {
+      dispatch(addComment(post._id, userData._id, text, userData.pseudo))
+        .then(() => dispatch(getPosts()))
+        .then(() => setText(""));
+    }
+  };
   return (
     <div className="comments-container">
       {post.comments.map((comment) => {
@@ -48,13 +60,28 @@ const CardComment = ({ post }) => {
                   )}
                 </div>
                 <span>{timestampParser(comment.timestamp)}</span>
-            
               </div>
               <p>{comment.text}</p>
+{uid == comment.commenterId && (
+
+  <EditDeleteComment comment = {comment} postId={post._id}  />
+)}
             </div>
           </div>
         );
       })}
+      {userData._id && (
+        <form action="" onSubmit={handlecomment} className="comment-form">
+          <input
+            type="text"
+            name="text"
+            onChange={(e) => setText(e.target.value)}
+            value={text}
+            placeholder="Laisser un commentaire"
+          />
+          <input type="submit" value="envoyer" />
+        </form>
+      )}
     </div>
   );
 };

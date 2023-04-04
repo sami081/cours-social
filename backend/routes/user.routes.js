@@ -10,7 +10,7 @@ const path = require("path");
 //stokage image user
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, `../../cours-social/frontend/client/public/uploads/profil/`);
+    cb(null, `../frontend/client/public/uploads/profil/`);
   },
   filename: function (req, file, cb) {
     cb(null,  file.originalname);

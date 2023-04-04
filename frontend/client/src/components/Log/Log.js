@@ -19,7 +19,7 @@ const Log = (props) => {
 
   return (
     <div className="connection-form">
-       <LeftNav/> 
+       {/* <LeftNav/>  */}
       <div className="form-container">
         <ul>
           <li
