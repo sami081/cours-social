@@ -4,13 +4,13 @@ const postController = require("../controllers/post.controller");
 const uploadController = require("../controllers/upload.controller");
 const multer = require("multer");
 
-const fileFilter = (req, file, callback) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'video/mp4') {
-    callback(null, true);
-  } else {
-    callback(null, false);
-  }
-};
+// const fileFilter = (req, file, callback) => {
+//   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'video/mp4') {
+//     callback(null, true);
+//   } else {
+//     callback(null, false);
+//   }
+// };
 //stokage image post
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
     
   },
 });
-const upload = multer({ storage: storage, fileFilter : fileFilter });
+const upload = multer({ storage: storage, });
 //message routes
 
 router.get("/", postController.readPost);

@@ -161,22 +161,43 @@ const NewPostForm = () => {
                     <div className="content">
                       <p>{message}</p>
                       {/* <img src={postPicture} alt="" /> */}
-                      {!video2 && postPicture && (
+                      {!video2 &&
+                      postPicture &&
+                      file.name.split(".").pop() != "mp4" ? (
+                        (console.log(file.name.split(".").pop()),
+                        (
+                          <>
+                            {" "}
+                            <img src={postPicture} alt="" />
+                          </>
+                        ))
+                      ) : (
                         <>
-                          {" "}
-                          <img src={postPicture} alt="" />
+                          {!video2  && postPicture ? (
+                            <video width="640" height="360" controls>
+                              <source src={postPicture} type="video/mp4" />
+                              Votre navigateur ne supporte pas la lecture de
+                              vidéos HTML5.
+                            </video>
+                          ) : (
+                            (console.log(video2),
+                            (
+                              <>
+                                <iframe
+                                  src={video2}
+                                  frameBorder="0"
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                  allowFullScreen
+                                  title={video2}
+                                ></iframe>
+                              </>
+                            ))
+                          )}
                         </>
                       )}
                     </div>
                   </div>
                 </li>
-                <iframe
-                  src={video2}
-                  title={video2}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
               </>
             ) : null}
             <div className="footer-form">
@@ -188,9 +209,11 @@ const NewPostForm = () => {
                       type="file"
                       id="file-upload"
                       name="file"
-                      accept=".jpg, .jpeg,.png"
+                      // accept=".jpg, .jpeg,.png"
                       onChange={(e) => handlePicture(e)}
-                      onClick={() => localStorage.removeItem("video")}
+                      onClick={() => {
+                        localStorage.removeItem("video");
+                      }}
                     />
                   </>
                 )}
@@ -198,7 +221,7 @@ const NewPostForm = () => {
                   <button
                     onClick={() => {
                       setVideo("");
-                      localStorage.removeItem("video")
+                      localStorage.removeItem("video");
                     }}
                   >
                     Supprimer la video
