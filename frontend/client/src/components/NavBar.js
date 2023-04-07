@@ -10,7 +10,7 @@ const NavBar = () => {
 console.log(userData);
     
     return (
-        <div>
+        <div className='bar'>
            <nav>
             <div className='nav-container'>
                 <div className='logo'>

@@ -173,7 +173,7 @@ const NewPostForm = () => {
                         ))
                       ) : (
                         <>
-                          {!video2  && postPicture ? (
+                          {!video2 && postPicture ? (
                             <video width="640" height="360" controls>
                               <source src={postPicture} type="video/mp4" />
                               Votre navigateur ne supporte pas la lecture de
@@ -183,13 +183,14 @@ const NewPostForm = () => {
                             (console.log(video2),
                             (
                               <>
-                                <iframe
+                              {video2 ? (<iframe
                                   src={video2}
                                   frameBorder="0"
                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                   allowFullScreen
                                   title={video2}
-                                ></iframe>
+                                ></iframe>):(null)}
+                                
                               </>
                             ))
                           )}
@@ -209,17 +210,17 @@ const NewPostForm = () => {
                       type="file"
                       id="file-upload"
                       name="file"
+                     value={""}
                       // accept=".jpg, .jpeg,.png"
                       onChange={(e) => handlePicture(e)}
-                      onClick={() => {
-                        localStorage.removeItem("video");
-                      }}
+                     
                     />
                   </>
                 )}
                 {video && (
-                  <button
-                    onClick={() => {
+                  <button type="submit"
+                    onClick={(e) => {
+                      // e.preventDefault()
                       setVideo("");
                       localStorage.removeItem("video");
                     }}

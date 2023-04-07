@@ -21,7 +21,7 @@ const index = () => {
         <Route path ="/activation-account/:token2" element={<ValidEmail/>}/>
         <Route path ="/forgot-password" element={<ForgotPassword/>}/>
         <Route path = "/modify-password/:_id/:token" element={<ModifyPassword/>}/>
-        <Route path = "/other-profil/:id" element = {<OtherProfil/>}/>
+        <Route path = "/otherProfil/" element = {<OtherProfil/>}/>
 
      </Routes>
      </BrowserRouter>

@@ -16,6 +16,7 @@ import {Provider} from "react-redux"
 // import rootReducer from "./reducers"
 import store from "./app/store"
 import { getUsers } from './actions/users.actions';
+import { getPosts } from './actions/post.action';
 
 // const store = configureStore({
 //     reducer: {
@@ -28,6 +29,7 @@ import { getUsers } from './actions/users.actions';
   
   
    store.dispatch(getUsers());
+   store.dispatch(getPosts())
 //   store.dispatch(getPosts());
 
 

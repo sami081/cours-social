@@ -1,0 +1,21 @@
+.other-profil-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .left-nav-container{
+  
+       
+        width: 25%;
+    }
+    .information-other-profil{
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img{
+            border-radius: 100%;
+            height: 3em;
+            width: 3em;
+        }
+    }
+}
